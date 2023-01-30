@@ -1,4 +1,4 @@
-drop table trips;
+
 create table trips
 (
 id int,
