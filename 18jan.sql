@@ -18,13 +18,19 @@ insert into matches values(1,30,20,1,0),(2,10,20,1,2),
 
 select * from matches;
 
-select t.team_id,t.team_name,
-case
-when fp.num_points is null then 0
-else fp.num_points
-end as num_point
-from teams t
-left join final_points fp on fp.team_id = t.team_id
-order by num_points desc;
+
+
+select t.team_id,t.team_name,sum(case 
+  when t.team_id = m.host_team and m.host_goals>m.guest_goals then 3
+  when t.team_id = m.host_team and m.host_goals=m.guest_goals then 1
+  when t.team_id = m.guest_team and  m.host_goals<m.guest_goals then 3
+  when t.team_id = m.guest_team and  m.host_goals=m.guest_goals then 1
+  else 0
+  end)as total_points
+  from teams t ,matches m group by t.team_id order by total_points desc ,t.team_id;
+  
+  
+  
+
 
 
